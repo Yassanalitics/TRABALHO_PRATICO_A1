@@ -1,0 +1,39 @@
+Tema escolhido:
+Clinica
+LEMBRAR DE COLOCAR ID NA LISTA 
+LISTA COM 5 ID
+RESQUSIÇÕES OBRIGATÓRIAS: GET, POST, PUT, DELETE
+
+Pacientes: Karoline
+-nome
+-CPF 
+-Telefone
+-historicoMedico
+
+Médico: Davi
+-nome
+-especialidade
+-CRM 
+-horario de atendimento
+
+Consultas: Ygor
+-paciente
+-medico
+-data
+-horario
+-diagnostico
+
+Exames: Alex
+-paciente
+-tipo de Exame
+-resultado
+-data
+
+Medicamento (Yasmin)
+-nome
+-uso
+-dosagem
+-periodo
+
+
+

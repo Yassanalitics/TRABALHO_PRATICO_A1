@@ -1,76 +1,124 @@
-const express = require("express");
-const router = express.Router();
-const Consulta = require("../models/Consulta");
+const express = require('express')
+const router = express.Router()
 
-// CREATE — criar nova consulta
-router.post("/", async (req, res) => {
-  try {
-    const consulta = new Consulta(req.body);
-    const saved = await consulta.save();
-    // Optionally populate references for response
-    const populated = await Consulta.findById(saved._id).populate('paciente medico');
-    res.status(201).json(populated);
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({ error: err.message });
+let listaConsultas = [
+  {
+    id: 1,
+    paciente: "João Silva",
+    medico: "Davi Melo",
+    data: "2023-10-15",
+    horario: "10:00",
+    diagnostico: "Hipertensão controlada"
+  },
+  {
+    id: 2,
+    paciente: "Maria Oliveira",
+    medico: "Yasmin Silva",
+    data: "2023-10-16",
+    horario: "14:30",
+    diagnostico: "Dor de Cabeça"
+  },
+  {
+    id: 3,
+    paciente: "Pedro Santos",
+    medico: "Ygor Farias",
+    data: "2023-10-17",
+    horario: "11:00",
+    diagnostico: "Fratura no braço tratada"
+  },
+  {
+    id: 4,
+    paciente: "Ana Costa",
+    medico: "Alex Ariel",
+    data: "2023-10-18",
+    horario: "15:45",
+    diagnostico: "Infecção urinária diagnosticada"
+  },
+  {
+    id: 5,
+    paciente: "Lucas Ferreira",
+    medico: "Karol Silva",
+    data: "2023-10-19",
+    horario: "09:30",
+    diagnostico: "Ansiedade moderada, prescrição de terapia"
   }
-});
+]
 
-// READ — listar todas as consultas
-router.get("/", async (req, res) => {
-  try {
-    // Optional: Filter by query params, e.g., ?paciente=ID or ?data=YYYY-MM-DD
-    const query = {};
-    if (req.query.paciente) query.paciente = req.query.paciente;
-    if (req.query.medico) query.medico = req.query.medico;
-    if (req.query.data) query.data = { $gte: new Date(req.query.data) }; // Example date filter
+router.get('/consultas', (req, res) => {
+  res.json(listaConsultas)
+})
 
-    const consultas = await Consulta.find(query).populate('paciente medico').sort({ data: 1, horario: 1 });
-    res.json(consultas);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+router.get('/consultas/:id', (req, res) => {
+  const id = req.params.id
+  const consulta = listaConsultas.find(c => c.id == id)
+  if (!consulta) {
+    return res.status(404).json({ error: "Consulta não encontrada!" })
   }
-});
+  res.json(consulta)
+})
 
-// READ (one) — obter uma consulta por id
-router.get("/:id", async (req, res) => {
-  try {
-    const consulta = await Consulta.findById(req.params.id).populate('paciente medico');
-    if (!consulta) return res.status(404).json({ error: "Consulta não encontrada" });
-    res.json(consulta);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+router.post('/consultas', (req, res) => {
+  const { paciente, medico, data, horario, diagnostico } = req.body
+
+  if (!paciente || !medico || !data || !horario || !diagnostico) {
+    return res.status(400).json({ error: "Todos os campos são obrigatórios!" })
   }
-});
 
-// UPDATE — atualizar consulta existente
-router.put("/:id", async (req, res) => {
-  try {
-    const updated = await Consulta.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    ).populate('paciente medico');
-    if (!updated) return res.status(404).json({ error: "Consulta não encontrada" });
-    res.json(updated);
-  } catch (err) {
-    console.error(err);
-    res.status(400).json({ error: err.message });
+  // Verificação simples de duplicata (mesmo médico, data e horário)
+  if (listaConsultas.some(c => c.medico === medico && c.data === data && c.horario === horario)) {
+    return res.status(409).json({ error: "Consulta já agendada para este médico, data e horário!" })
   }
-});
 
-// DELETE — remover consulta
-router.delete("/:id", async (req, res) => {
-  try {
-    const removed = await Consulta.findByIdAndDelete(req.params.id);
-    if (!removed) return res.status(404).json({ error: "Consulta não encontrada" });
-    res.json({ message: "Consulta removida com sucesso" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+  const novaConsulta = {
+    id: Date.now(),
+    paciente,
+    medico,
+    data,
+    horario,
+    diagnostico
   }
-});
 
-module.exports = router;
+  listaConsultas.push(novaConsulta)
+  res.status(201).json({ message: "Consulta cadastrada com sucesso!", novaConsulta })
+})
+
+router.put('/consultas/:id', (req, res) => {
+  const id = req.params.id
+  const consulta = listaConsultas.find(c => c.id == id)
+
+  if (!consulta) {
+    return res.status(404).json({ error: "Consulta não encontrada!" })
+  }
+
+  const { paciente, medico, data, horario, diagnostico } = req.body
+  if (!paciente || !medico || !data || !horario || !diagnostico) {
+    return res.status(400).json({ error: "Todos os campos são obrigatórios!" })
+  }
+
+  // Verificação de duplicata após atualização (excluindo a própria consulta)
+  if (listaConsultas.some(c => c.id != id && c.medico === medico && c.data === data && c.horario === horario)) {
+    return res.status(409).json({ error: "Já existe outra consulta para este médico, data e horário!" })
+  }
+
+  consulta.paciente = paciente
+  consulta.medico = medico
+  consulta.data = data
+  consulta.horario = horario
+  consulta.diagnostico = diagnostico
+
+  res.json({ message: "Consulta atualizada com sucesso!", consulta })
+})
+
+router.delete('/consultas/:id', (req, res) => {
+  const id = req.params.id
+  const consulta = listaConsultas.find(c => c.id == id)
+
+  if (!consulta) {
+    return res.status(404).json({ error: "Consulta não encontrada!" })
+  }
+
+  listaConsultas = listaConsultas.filter(c => c.id != id)
+  res.json({ message: "Consulta excluída com sucesso!" })
+})
+
+module.exports = router

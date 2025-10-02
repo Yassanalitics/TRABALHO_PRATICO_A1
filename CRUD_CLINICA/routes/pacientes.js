@@ -54,6 +54,15 @@ router.get("/pacientes/:id", (req, res) => {
   res.json(paciente);
 });
 
+// GET — retorna um paciente por NOME
+router.get("/pacientes/:nome", (req, res) => {
+  const paciente = pacientes.find(p => p.nome === parseInt(req.params.nome));
+  if (!paciente) {
+    return res.status(404).json({ error: "Paciente não encontrado" });
+  }
+  res.json(paciente);
+});
+
 // POST — adiciona novo paciente
 router.post("/pacientes", (req, res) => {
   const novoPaciente = {

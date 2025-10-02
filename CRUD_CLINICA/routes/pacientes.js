@@ -46,7 +46,7 @@ router.get("/pacientes", (req, res) => {
 });
 
 // GET — retorna um paciente por ID
-router.get("/pacientes:id", (req, res) => {
+router.get("/pacientes/:id", (req, res) => {
   const paciente = pacientes.find(p => p.id === parseInt(req.params.id));
   if (!paciente) {
     return res.status(404).json({ error: "Paciente não encontrado" });
@@ -65,7 +65,7 @@ router.post("/pacientes", (req, res) => {
 });
 
 // PUT — atualiza paciente existente
-router.put("/pacientes:id", (req, res) => {
+router.put("/pacientes/:id", (req, res) => {
   const index = pacientes.findIndex(p => p.id === parseInt(req.params.id));
   if (index === -1) {
     return res.status(404).json({ error: "Paciente não encontrado" });
@@ -75,7 +75,7 @@ router.put("/pacientes:id", (req, res) => {
 });
 
 // DELETE — remove paciente
-router.delete("/pacientes:id", (req, res) => {
+router.delete("/pacientes/:id", (req, res) => {
   const index = pacientes.findIndex(p => p.id === parseInt(req.params.id));
   if (index === -1) {
     return res.status(404).json({ error: "Paciente não encontrado" });

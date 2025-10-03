@@ -1,41 +1,41 @@
-const express = Require('express');
+const express = require('express');
 const router = express.Router();
 
 let exames = [
   {
     id: 1,
-    Paciente: "João da Silva",
-    Tipo: "Raio-X",
-    Resultado: "Braço deslocado",
-    Data: "30/09/2025"
+    paciente: "Taylor Swift",
+    tipo: "Exame de sangue",
+    resultado: "Níveis de hormônios baixo",
+    data: "30/09/2025"
   },
   {
     id: 2,
-    Paciente: "Guilherme Araújo",
-    Tipo: "Eletrocardiograma",
-    Resultado: "Arritmia Cardiaca Moderada",
-    Data: "28/09/2025"
+    paciente: "Bruno henrique",
+    tipo: "Ultrassonografia ocular",
+    resultado: "Retina direita descolada",
+    data: "28/09/2025"
   },
   {
     id: 3,
-    Paciente: "Erick Oliveira",
-    Tipo: "Tonometria",
-    Resultado: "Pressão Ocular (glaucoma)",
-    Data: "23/09/2025"
+    paciente: "Mariana Oliveira Santos",
+    tipo: "Tomografia Computadorizada de Abdômen e Pelve sem Contraste",
+    resultado: "Cálculo no rim esquedo",
+    data: "23/09/2025"
   },
   {
     id: 4,
-    Paciente: "Vanessa Soares",
-    Tipo: "Audiometria",
-    Resultado: "Perda Auditiva",
-    Data: "20/09/2025"
+    paciente: "João Pedro Almeida",
+    tipo: "Tomografia Computadorizada",
+    resultado: "Formação de calo ósseo sobre a fratura",
+    data: "20/09/2025"
   },
   {
     id: 5,
-    Paciente: "Cristina Ribeiro",
-    Tipo: "Mamografia",
-    Resultado: "Prevenção ao Câncer de Mama",
-    Data: "12/09/2025"
+    paciente: "Gustavo Clay",
+    tipo: "Eletrocardiograma",
+    resultado: "Hipertrofia ventricular esquerda",
+    data: "12/09/2025"
   }
   
 ];
@@ -56,11 +56,21 @@ router.get('/exames/:id', (req, res) => {
   res.json(exames);
 });
 
+router.get('/exames/:paciente', (req, res) => {
+    const id = parseInt(req.params.id);
+    const exames = exames.find(a => a.id === id);
+  
+    if (!exames) {
+      return res.status(404).json({ erro: 'Paciente não encontrado' });
+    }
+  
+    res.json(exames);
+  });
 
 router.post('/exames', (req, res) => {
-  const { Paciente, Tipo, Resultado, Data } = req.body;
+  const { paciente, tipo, resultado, data } = req.body;
 
-  if (!Paciente || !Tipo || !Resultado || !Data) {
+  if (!paciente || !tipo || !resultado || !data) {
     return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
   }
 
@@ -70,13 +80,13 @@ router.post('/exames', (req, res) => {
 
   const novoExame = {
     id: exames.length + 1,
-    Paciente,
-    Tipo,
-    Resultado,
-    Data,
+    paciente,
+    tipo,
+    resultado,
+    data,
   };
 
-  alunos.push(novoExame);
+  exames.push(novoExame);
   res.status(201).json(novoExame);
 });
 
@@ -89,13 +99,13 @@ router.put('/exames:id', (req, res) => {
     return res.status(404).json({ erro: 'Paciente não encontrado' });
   }
 
-  const { Paciente, Tipo, Resultado, Data} = req.body;
+  const { paciente, tipo, resultado, data} = req.body;
 
-  if (!Paciente || !Tipo || !Resultado || !Data) {
+  if (!paciente || !tipo || !resultado || !data) {
     return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
   }
 
-  exames[index] = { id, Paciente, Tipo, Resultado, Data };
+  exames[index] = { id, paciente, tipo, resultado, data };
   res.json(exames[index]);
 });
 
@@ -112,4 +122,4 @@ router.delete('/exames:id', (req, res) => {
   res.status(204).send();
 });
 
-Module.exports = router;
+module.exports = router;

@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "af587dce-2f8f-4aa9-a041-4af79df2ce7d",
+		"name": "CRUD-MEDICAMENTOS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48983072",
+		"_collection_link": "https://www.postman.com/yasminribeiro152005-981820/crud-clinica/collection/039lgpz/crud-medicamentos?action=share&source=collection_link&creator=48983072"
+	},
+	"item": [
+		{
+			"name": "Mostrar lista",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/medicamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"medicamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pesquisar por nome do medicamento",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/medicamentos/nome/Amoxicilina",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"medicamentos",
+						"nome",
+						"Amoxicilina"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adcionar novo medicamento",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \r\n  \"nome\": \"Paracetamol\",\r\n  \"uso\": \"Alívio de dor e febre\",\r\n  \"dosagem\": \"500mg\",\r\n  \"periodo\": \"A cada 6 horas\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/medicamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"medicamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar medicamento",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"id\":3,\r\n        \"nome\":\"Dipirona (Metamizol)\",\r\n        \"uso\":\"Analgésico e antitérmico (dor e febre).\",\r\n        \"dosagem\":\"500 mg a 1 g por dose.\",\r\n        \"periodo\":\"A cada 6–7 horas, máximo 4 g/dia.\"\r\n    } //Atualizado: periodo",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/medicamentos/nome/Paracetamol",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"medicamentos",
+						"nome",
+						"Paracetamol"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir medicamento",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/medicamentos/nome/Omeprazol",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"medicamentos",
+						"nome",
+						"Omeprazol"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

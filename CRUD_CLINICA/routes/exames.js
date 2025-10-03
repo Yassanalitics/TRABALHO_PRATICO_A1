@@ -43,7 +43,7 @@ router.get('/exames', (req, res, next) => {
   res.json(exames);
 });
 // GEt por id ou nome
-router.get("/exames/:id", (req, res) => {
+router.get("/exames/id/:id", (req, res) => {
   const exame = exames.find(p => p.id === parseInt(req.params.id));
   if (!exame) {
     return res.status(404).json({ error: "exame nao encontrado" });
@@ -51,13 +51,16 @@ router.get("/exames/:id", (req, res) => {
   res.json(exame);
 });
 
-router.get("/exames/:paciente", (req, res) => {
-  const exame = exames.find(p => p.paciente === parseInt(req.params.paciente));
+router.get("/exames/nome/:nome", (req, res) => {
+  const nome = req.params.nome.toLowerCase();
+
+  const exame = exames.find(p => p.paciente.toLowerCase().includes(nome));
   if (!exame) {
     return res.status(404).json({ error: "Exame não encontrado" });
   }
   res.json(exame);
 });
+
 // POST
 router.post('/exames', (req, res) => {
   const { paciente, tipo, resultado, data } = req.body;
@@ -79,7 +82,7 @@ router.post('/exames', (req, res) => {
 });
 
 //PUT
-router.put('/exames/:id', (req, res) => {
+router.put('/exames/id/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const index = exames.findIndex(a => a.id === id);
   if (index === -1) {
@@ -93,7 +96,7 @@ router.put('/exames/:id', (req, res) => {
   res.json(exames[index]);
 });
 //DELETE
-router.delete('/exames:id', (req, res) => {
+router.delete('/exames/id/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const index = exames.findIndex(a => a.id === id);
 

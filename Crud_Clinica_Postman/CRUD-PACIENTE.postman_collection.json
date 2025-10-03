@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "dcdec1ff-ea19-4f3f-8011-9fd95cce45f6",
+		"name": "CRUD-PACIENTE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48983072",
+		"_collection_link": "https://www.postman.com/yasminribeiro152005-981820/crud-clinica/collection/fhye870/crud-paciente?action=share&source=collection_link&creator=48983072"
+	},
+	"item": [
+		{
+			"name": "Mostrar lista",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pacientes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pacientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar novo paciente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    {\r\n    \"nome\": \"João Pedro Santos\",\r\n    \"CPF\": \"321.654.888-33\",\r\n    \"telefone\": \"(41) 93456-7560\",\r\n    \"historicoMedico\": \"Histórico de fratura no fêmur, sem complicações recentes.\"\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/pacientes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pacientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Paciente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pacientes/id/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pacientes",
+						"id",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletar paciente",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pacientes/id/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pacientes",
+						"id",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pesquisar paciente por nome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pacientes/nome/Taylor%20Swift",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pacientes",
+						"nome",
+						"Taylor%20Swift"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

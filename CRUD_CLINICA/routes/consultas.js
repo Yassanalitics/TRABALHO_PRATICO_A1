@@ -47,20 +47,24 @@ let listaConsultas = [
 router.get('/consultas', (req, res) => {
   res.json(listaConsultas)
 })
-router.get("/consultas/:id", (req, res) => {
-  const consulta = consultas.find(p => p.id === parseInt(req.params.id));
+router.get("/consultas/id/:id", (req, res) => {
+  const consulta = listaConsultas.find(p => p.id === parseInt(req.params.id));
   if (!consulta) {
     return res.status(404).json({ error: "Consulta não encontrada." });
   }
   res.json(consulta);
 });
-router.get("/consultas/:paciente", (req, res) => {
-  const consulta = consultas.find(p => p.paciente === parseInt(req.params.paciente));
+
+router.get("/consultas/nome/:paciente", (req, res) => {
+  const nome = req.params.paciente.toLowerCase();
+  
+  const consulta = listaConsultas.find(c => c.paciente.toLowerCase().includes(nome));
   if (!consulta) {
-    return res.status(404).json({ error: "consulta não encontrada" });
+    return res.status(404).json({ error: "Consulta não encontrada" });
   }
   res.json(consulta);
 });
+
 
 router.post('/consultas', (req, res) => {
   const { paciente, medico, data, horario, diagnostico } = req.body
@@ -87,7 +91,7 @@ router.post('/consultas', (req, res) => {
   res.status(201).json({ message: "Consulta cadastrada com sucesso!", novaConsulta })
 })
 
-router.put('/consultas/:id', (req, res) => {
+router.put('/consultas/id/:id', (req, res) => {
   const id = req.params.id
   const consulta = listaConsultas.find(c => c.id == id)
 
@@ -114,7 +118,7 @@ router.put('/consultas/:id', (req, res) => {
   res.json({ message: "Consulta atualizada com sucesso!", consulta })
 })
 
-router.delete('/consultas/:id', (req, res) => {
+router.delete('/consultas/id/:id', (req, res) => {
   const id = req.params.id
   const consulta = listaConsultas.find(c => c.id == id)
 

@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "f5060c06-77b2-43ee-a3b0-c17ba0dcc98c",
+		"name": "CRUD-EXAMES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48983072",
+		"_collection_link": "https://www.postman.com/yasminribeiro152005-981820/crud-clinica/collection/d69j6td/crud-exames?action=share&source=collection_link&creator=48983072"
+	},
+	"item": [
+		{
+			"name": "Mostrar Lista",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/exames",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"exames"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pesquisar exame por nome do paciente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/exames/nome/Gustavo%20Clay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"exames",
+						"nome",
+						"Gustavo%20Clay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar exame",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \" paciente\": \"Carlinhos Maia\",\r\n    \"tipo\": \"Eletrocardiograma\",\r\n    \"resultado\": \"Hipertrofia ventricular esquerda\",\r\n    \"data\": \"12/10/2025\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/exames",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"exames"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar Exame",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {  \r\n    \"id\": 3,\r\n    \"paciente\": \"Mariana Oliveira Santos\",\r\n    \"tipo\": \"Tomografia Computadorizada de Abdômen e Pelve sem Contraste\",\r\n    \"resultado\": \"Cálculo no rim esquerdo e direito\",\r\n    \"data\": \"23/09/2025\"\r\n  } //Atualizar: Resultado",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/exames/id/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"exames",
+						"id",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir exame",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/pacientes/id/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"pacientes",
+						"id",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

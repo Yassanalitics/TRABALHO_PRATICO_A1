@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "507d971e-b636-4af4-a352-99f4fbbe4858",
+		"name": "CRUD-CONSULTAS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48983072",
+		"_collection_link": "https://www.postman.com/yasminribeiro152005-981820/crud-clinica/collection/c2epmnc/crud-consultas?action=share&source=collection_link&creator=48983072"
+	},
+	"item": [
+		{
+			"name": "Mostrar lista",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/consultas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"consultas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pesquisar Consultas por nome do paciente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/consultas/nome/Maria%20Oliveira",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"consultas",
+						"nome",
+						"Maria%20Oliveira"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar Consulta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paciente\": \"Leandro Karlos\",\r\n    \"medico\": \"Karol Silva\",\r\n    \"data\": \"2023-11-19\",\r\n    \"horario\": \"09:30\",\r\n    \"diagnostico\": \"Bournout grave, prescrição de atestado\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/consultas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"consultas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar consulta",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"id\": 5,\r\n    \"paciente\": \"Lucas Ferreira\",\r\n    \"medico\": \"Karol Silva\",\r\n    \"data\": \"2023-10-29\",\r\n    \"horario\": \"10:30\",\r\n    \"diagnostico\": \"Ansiedade moderada, prescrição de terapia\"\r\n  } //Atualizar data e horario",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/consultas/id/5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"consultas",
+						"id",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir consulta",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/consultas/id/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"consultas",
+						"id",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

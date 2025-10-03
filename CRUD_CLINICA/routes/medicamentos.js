@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); 
 const router = express.Router();
 
 let MedicamentosList = [
@@ -38,64 +38,73 @@ let MedicamentosList = [
         periodo:"1 vez ao dia, geralmente antes do café da manhã, por 4 a 8 semanas."
     },
 ]
-//get medicamentos
-router.get('/medicamentos', (req, res, next) =>{
+
+// GET todos medicamentos
+router.get('/medicamentos', (req, res) =>{
     res.json(MedicamentosList)
 })
-//get medicamentos/:id
-router.get('/medicamentos/:id', (req,re,next)=>{
-    const id = req.params.id
-    const medicamento = MedicamentosList.find(medicamento => medicamento.id == id)
+
+// GET por id
+router.get('/medicamentos/id/:id', (req,res)=>{
+    const id = parseInt(req.params.id)
+    const medicamento = MedicamentosList.find(m => m.id === id)
     if(!medicamento){
         return res.status(404).json({error:"Medicamento não encontrado."})
     }
-res.json(medicamento)
+    res.json(medicamento)
 })
-router.get("/medicamentos/:nome", (req, res) => {
-  const medicamento = medicamentos.find(p => p.nome === parseInt(req.params.nome));
-  if (!medicamento) {
-    return res.status(404).json({ error: "Medicamento não encontrado" });
-  }
-  res.json(medicamento);
+
+// GET por nome
+router.get("/medicamentos/nome/:nome", (req, res) => {
+    const nome = req.params.nome.toLowerCase();
+    const medicamento = MedicamentosList.find(p => p.nome.toLowerCase().includes(nome));
+    if (!medicamento) {
+        return res.status(404).json({ error: "Medicamento não encontrado" });
+    }
+    res.json(medicamento);
 });
-//POST 
-router.post("/medicamentos", (req, res,next)=>{
+
+// POST
+router.post("/medicamentos", (req, res)=>{
     const {nome,uso,dosagem,periodo} = req.body
     if(!nome || !uso ||!dosagem ||!periodo){
         return res.status(400).json({error: "Todos os campos são obrigatórios."})
     }
-    const NovoMedicamento ={
-        id: ultimoID + 1,
-        nome,
-        uso,
-        dosagem,
-        periodo
-    }
+    const novoID = MedicamentosList.length ? MedicamentosList[MedicamentosList.length - 1].id + 1 : 1;
+    const NovoMedicamento = { id: novoID, nome, uso, dosagem, periodo }
     MedicamentosList.push(NovoMedicamento)
-    res.status(201).json({message:"Medicamento cadastrado."})
+    res.status(201).json({message:"Medicamento cadastrado.", NovoMedicamento})
 })
-//Put
-router.put('/medicamentos/:nome', (req,res)=> {
- const nome = (res.params.nome)
-    const index = MedicamentosList.findIndex(p => p.nome === nome)
+
+// PUT por nome
+router.put('/medicamentos/nome/:nome', (req,res)=> {
+    const nome = req.params.nome
+    const index = MedicamentosList.findIndex(p => p.nome.toLowerCase() === nome.toLowerCase())
     if (index === -1) return res.status(404).json({ error: "Medicamento não encontrado." })
 
-      //  const {nome,uso,dosagem,periodo} = req.body
-    if(!nome || !uso ||!dosagem ||!periodo){
+    const { uso, dosagem, periodo } = req.body
+    if(!req.body.nome || !uso ||!dosagem ||!periodo){
         return res.status(400).json({error: "Todos os campos são obrigatórios."})
     }
-    const updated = {id, nome, uso, dosagem, periodo}
-    MedicamentosList[index] = updated
-    res.json(updated)
+    
+    MedicamentosList[index] = { 
+        id: MedicamentosList[index].id, 
+        nome: req.body.nome, 
+        uso, 
+        dosagem, 
+        periodo 
+    }
+    res.json({message: "Medicamento atualizado.", Medicamento: MedicamentosList[index]})
 })
-//DELETE
-router.delete('/medicamentos/:nome', (req,res) =>{
-    const nome = (req.params.nome)
-    if(!nome) 
-        return res.status(404).json({error: "Nome de medicamento invalido."})
-    const index = MedicamentosList.findIndex(p => p.nome === nome)
+
+// DELETE por nome
+router.delete('/medicamentos/nome/:nome', (req,res) =>{
+    const nome = req.params.nome
+    const index = MedicamentosList.findIndex(p => p.nome.toLowerCase() === nome.toLowerCase())
     if (index === -1) return res.status(404).json({ error: 'Medicamento não encontrado.' })
-    MedicamentosList.splice(index,1)
-res.status(204).send()
+    
+    const removido = MedicamentosList.splice(index,1)
+    res.json({message: `Medicamento '${removido[0].nome}' deletado com sucesso.`})
 })
+
 module.exports = router

@@ -47,15 +47,20 @@ let listaConsultas = [
 router.get('/consultas', (req, res) => {
   res.json(listaConsultas)
 })
-
-router.get('/consultas/:id', (req, res) => {
-  const id = req.params.id
-  const consulta = listaConsultas.find(c => c.id == id)
+router.get("/consultas/:id", (req, res) => {
+  const consulta = consultas.find(p => p.id === parseInt(req.params.id));
   if (!consulta) {
-    return res.status(404).json({ error: "Consulta não encontrada!" })
+    return res.status(404).json({ error: "Consulta não encontrada." });
   }
-  res.json(consulta)
-})
+  res.json(consulta);
+});
+router.get("/consultas/:paciente", (req, res) => {
+  const consulta = consultas.find(p => p.paciente === parseInt(req.params.paciente));
+  if (!consulta) {
+    return res.status(404).json({ error: "consulta não encontrada" });
+  }
+  res.json(consulta);
+});
 
 router.post('/consultas', (req, res) => {
   const { paciente, medico, data, horario, diagnostico } = req.body

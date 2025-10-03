@@ -1,5 +1,5 @@
 const express = require('express')
-const Router = express.Router
+const router = express.Router
 
 let MedicamentosList = [
     {
@@ -98,4 +98,4 @@ router.delete('/medicamentos/:nome', (req,res) =>{
     MedicamentosList.splice(index,1)
 res.status(204).send()
 })
-module.exports=router
+module.exports = router

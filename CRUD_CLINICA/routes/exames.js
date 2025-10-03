@@ -75,11 +75,11 @@ router.post('/exames', (req, res) => {
     data,
   };
   exames.push(novoExame);
-  res.status(201).json(novoExame);
+  res.status(201).json({message: "Exame cadastrado"});
 });
 
 //PUT
-router.put('/exames:id', (req, res) => {
+router.put('/exames/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const index = exames.findIndex(a => a.id === id);
   if (index === -1) {

@@ -51,6 +51,13 @@ router.get('/medicamentos/:id', (req,re,next)=>{
     }
 res.json(medicamento)
 })
+router.get("/medicamentos/:nome", (req, res) => {
+  const medicamento = medicamentos.find(p => p.nome === parseInt(req.params.nome));
+  if (!medicamento) {
+    return res.status(404).json({ error: "Medicamento não encontrado" });
+  }
+  res.json(medicamento);
+});
 //POST 
 router.post("/medicamentos", (req, res,next)=>{
     const {nome,uso,dosagem,periodo} = req.body
@@ -58,7 +65,7 @@ router.post("/medicamentos", (req, res,next)=>{
         return res.status(400).json({error: "Todos os campos são obrigatórios."})
     }
     const NovoMedicamento ={
-        id: Date.now(),
+        id: ultimoID + 1,
         nome,
         uso,
         dosagem,

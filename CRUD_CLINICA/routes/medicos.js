@@ -51,7 +51,13 @@ router.get('/medicos/:id', (req, res) => {
   }
   res.json(medico)
 })
-
+router.get("/medicos/:nome", (req, res) => {
+  const medico = medicos.find(p => p.nome === parseInt(req.params.nome));
+  if (!medico) {
+    return res.status(404).json({ error: "Medico não encontrado" });
+  }
+  res.json(medico);
+});
 router.post('/medicos', (req, res) => {
   const { nome, especialidade, crm, horarioAtendimento } = req.body
 
@@ -108,3 +114,4 @@ router.delete('/medicos/:id', (req, res) => {
 })
 
 module.exports = router
+

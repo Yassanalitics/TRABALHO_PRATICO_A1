@@ -11,7 +11,7 @@ let exames = [
   },
   {
     id: 2,
-    paciente: "Bruno henrique",
+    paciente: "Bruno Henrique",
     tipo: "Ultrassonografia ocular",
     resultado: "Retina direita descolada",
     data: "28/09/2025"
@@ -20,7 +20,7 @@ let exames = [
     id: 3,
     paciente: "Mariana Oliveira Santos",
     tipo: "Tomografia Computadorizada de Abdômen e Pelve sem Contraste",
-    resultado: "Cálculo no rim esquedo",
+    resultado: "Cálculo no rim esquerdo",
     data: "23/09/2025"
   },
   {
@@ -37,47 +37,35 @@ let exames = [
     resultado: "Hipertrofia ventricular esquerda",
     data: "12/09/2025"
   }
-  
 ];
-
-
-router.get('/exames', (req, res) => {
+// GET
+router.get('/exames', (req, res, next) => {
   res.json(exames);
 });
-
-router.get('/exames/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const exames = exames.find(a => a.id === id);
-
-  if (!exames) {
-    return res.status(404).json({ erro: 'Paciente não encontrado' });
+// GEt por id ou nome
+router.get('/exames/:param', (req, res, next) => {
+  const param = req.params.param;
+  let exame;
+  if (!isNaN(param)) {
+    const id = parseInt(param);
+    exame = exames.find(a => a.id === id);
+  } else {
+    exame = exames.find(a => a.paciente.toLowerCase() === param.toLowerCase());
   }
-
-  res.json(exames);
+  if (!exame) {
+    return res.status(404).json({ erro: 'Exame não encontrado' });
+  }
+  res.json(exame);
 });
-
-router.get('/exames/:paciente', (req, res) => {
-    const id = parseInt(req.params.id);
-    const exames = exames.find(a => a.id === id);
-  
-    if (!exames) {
-      return res.status(404).json({ erro: 'Paciente não encontrado' });
-    }
-  
-    res.json(exames);
-  });
-
-router.post('/exames', (req, res) => {
+// POST
+router.post('/exames', (req, res, next) => {
   const { paciente, tipo, resultado, data } = req.body;
-
   if (!paciente || !tipo || !resultado || !data) {
     return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
   }
-
-  if (exames.some(a => a.cpf === cpf)) {
+  if (exames.some(a => a.paciente.toLowerCase() === paciente.toLowerCase())) {
     return res.status(409).json({ erro: 'Paciente já cadastrado !!!' });
   }
-
   const novoExame = {
     id: exames.length + 1,
     paciente,
@@ -85,39 +73,42 @@ router.post('/exames', (req, res) => {
     resultado,
     data,
   };
-
   exames.push(novoExame);
   res.status(201).json(novoExame);
 });
-
-
-router.put('/exames:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = exames.findIndex(a => a.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ erro: 'Paciente não encontrado' });
+// PUT
+router.put('/exames/:param', (req, res) => {
+  const param = req.params.param;
+  let index;
+  if (!isNaN(param)) {
+    const id = parseInt(param);
+    index = exames.findIndex(a => a.id === id);
+  } else {
+    index = exames.findIndex(a => a.paciente.toLowerCase() === param.toLowerCase());
   }
-
-  const { paciente, tipo, resultado, data} = req.body;
-
+  if (index === -1) {
+    return res.status(404).json({ erro: 'Exame não encontrado' });
+  }
+  const { paciente, tipo, resultado, data } = req.body;
   if (!paciente || !tipo || !resultado || !data) {
     return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
   }
-
-  exames[index] = { id, paciente, tipo, resultado, data };
+  exames[index] = { id: exames[index].id, paciente, tipo, resultado, data };
   res.json(exames[index]);
 });
-
-
-router.delete('/exames:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = exames.findIndex(a => a.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ erro: 'Paciente não encontrado !' });
+// DELETE
+router.delete('/exames/:param', (req, res) => {
+  const param = req.params.param;
+  let index;
+  if (!isNaN(param)) {
+    const id = parseInt(param);
+    index = exames.findIndex(a => a.id === id);
+  } else {
+    index = exames.findIndex(a => a.paciente.toLowerCase() === param.toLowerCase());
   }
-
+  if (index === -1) {
+    return res.status(404).json({ erro: 'Exame não encontrado!' });
+  }
   exames.splice(index, 1);
   res.status(204).send();
 });

@@ -43,27 +43,28 @@ router.get('/exames', (req, res, next) => {
   res.json(exames);
 });
 // GEt por id ou nome
-router.get('/exames/:param', (req, res, next) => {
-  const param = req.params.param;
-  let exame;
-  if (!isNaN(param)) {
-    const id = parseInt(param);
-    exame = exames.find(a => a.id === id);
-  } else {
-    exame = exames.find(a => a.paciente.toLowerCase() === param.toLowerCase());
-  }
+router.get("/exames/:id", (req, res) => {
+  const exame = exames.find(p => p.id === parseInt(req.params.id));
   if (!exame) {
-    return res.status(404).json({ erro: 'Exame não encontrado' });
+    return res.status(404).json({ error: "exame nao encontrado" });
+  }
+  res.json(exame);
+});
+
+router.get("/exames/:paciente", (req, res) => {
+  const exame = exames.find(p => p.paciente === parseInt(req.params.paciente));
+  if (!exame) {
+    return res.status(404).json({ error: "Exame não encontrado" });
   }
   res.json(exame);
 });
 // POST
-router.post('/exames', (req, res, next) => {
+router.post('/exames', (req, res) => {
   const { paciente, tipo, resultado, data } = req.body;
   if (!paciente || !tipo || !resultado || !data) {
     return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
   }
-  if (exames.some(a => a.paciente.toLowerCase() === paciente.toLowerCase())) {
+  if (exames.some(a => a.paciente === paciente)) {
     return res.status(409).json({ erro: 'Paciente já cadastrado !!!' });
   }
   const novoExame = {
@@ -76,39 +77,30 @@ router.post('/exames', (req, res, next) => {
   exames.push(novoExame);
   res.status(201).json(novoExame);
 });
-// PUT
-router.put('/exames/:param', (req, res) => {
-  const param = req.params.param;
-  let index;
-  if (!isNaN(param)) {
-    const id = parseInt(param);
-    index = exames.findIndex(a => a.id === id);
-  } else {
-    index = exames.findIndex(a => a.paciente.toLowerCase() === param.toLowerCase());
-  }
+
+//PUT
+router.put('/exames:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = exames.findIndex(a => a.id === id);
   if (index === -1) {
-    return res.status(404).json({ erro: 'Exame não encontrado' });
+    return res.status(404).json({ erro: 'Paciente não encontrado' });
   }
-  const { paciente, tipo, resultado, data } = req.body;
+  const { paciente, tipo, resultado, data} = req.body;
   if (!paciente || !tipo || !resultado || !data) {
     return res.status(400).json({ erro: 'Todos os campos são obrigatórios' });
   }
-  exames[index] = { id: exames[index].id, paciente, tipo, resultado, data };
+  exames[index] = { id, paciente, tipo, resultado, data };
   res.json(exames[index]);
 });
-// DELETE
-router.delete('/exames/:param', (req, res) => {
-  const param = req.params.param;
-  let index;
-  if (!isNaN(param)) {
-    const id = parseInt(param);
-    index = exames.findIndex(a => a.id === id);
-  } else {
-    index = exames.findIndex(a => a.paciente.toLowerCase() === param.toLowerCase());
-  }
+//DELETE
+router.delete('/exames:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const index = exames.findIndex(a => a.id === id);
+
   if (index === -1) {
-    return res.status(404).json({ erro: 'Exame não encontrado!' });
+    return res.status(404).json({ erro: 'Paciente não encontrado !' });
   }
+
   exames.splice(index, 1);
   res.status(204).send();
 });
